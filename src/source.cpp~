@@ -1,0 +1,46 @@
+#include "ros/ros.h"
+#include "camera_nodelet/helper.h"
+#include "camera_nodelet/my_nodes.h"
+#include <nodelet/nodelet.h>
+#include "sensor_msgs/Image.h"
+#include "sensor_msgs/image_encodings.h"
+
+namespace camera{
+    void source::onInit(){
+	ros::NodeHandle& rs = getPrivateNodeHandle();
+	ros::Publisher depth_pub = rs.advertise<sensor_msgs::Image>("depth", 8);
+    	ros::Publisher rgb_pub = rs.advertise<sensor_msgs::Image>("RGB", 8);
+    	c.enable_stream(RS2_STREAM_DEPTH, 640, 480, RS2_FORMAT_Z16, FPS);
+    	c.enable_stream(RS2_STREAM_COLOR, 640, 480, RS2_FORMAT_RGB8, (FPS>60)?60:FPS);//according to Intel RS documentation, the max FPS of rgb stream is 60 
+    	p.start(c);
+    	timer = n.createTimer(ros::Duration(1/(FPS+5)), &Level1::timerCallback, this);
+    }
+	
+	
+    void timerCallback(const ros::TimerEvent& event){
+	sensor_msgs::Image depth_msg;
+	sensor_msgs::Image rgb_msg;
+	frames = p.wait_for_frames();
+	
+	rs2::depth_frame depth = frames.get_depth_frame();
+	rs2::video_frame color = frames.get_color_frame();
+
+	unsigned int width = depth.get_width();
+	unsigned int height = depth.get_height();
+
+	unsigned int width_color = color.get_width();
+	unsigned int height_color = color.get_height();
+    
+	const uint8_t* pixel_ptr = (const uint8_t*)(depth.get_data());
+	const uint8_t* pixel_ptr_color = (const uint8_t*)(color.get_data());
+
+	unsigned int pixel_amount = width*height;
+	unsigned int pixel_amount_color = width_color*height_color;
+
+	//as for the size of the vector, since depth image is of mono16 format, one pixel corresponds to 2 bytes (2 bytes/channel); RGB is of rgb8 format, where one pixel is consisted of 3 channels, 1 byte for each channel leads to a total of 3 bytes/pixel.
+	std::vector<uint8_t> depth_image(2*pixel_amount);
+	std::vector<uint8_t> color_image(3*pixel_amount_color);
+	memcpy(&depth_image[0], pixel_ptr, 2*pixel_amount*sizeof(uint8_t));
+	memcpy(&color_image[0], pixel_ptr_color, 3*pixel_amount_color*sizeof(uint8_t));
+    }
+}
