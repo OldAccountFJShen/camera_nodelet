@@ -15,6 +15,7 @@ namespace camera{
     	c.enable_stream(RS2_STREAM_COLOR, 640, 480, RS2_FORMAT_RGB8, (FPS>60)?60:FPS);//according to Intel RS documentation, the max FPS of rgb stream is 60 
     	p.start(c);
     	timer = rs.createTimer(ros::Duration(1/(FPS+5)), &source::timerCallback, this);
+	NODELET_INFO("Camera source node initialized\n");
     }
 	
 	

@@ -49,7 +49,7 @@ namespace camera{
 	virtual void onInit();
     private:
 	ros::Subscriber depth_sub;
-	cv_bridge::CvImagePtr cv_ptr;
+	cv_bridge::CvImagePtr cv_ptr; //i don't know if I should put cv_ptr here or in the method scope
 	void drain_callback(const sensor_msgs::Image::ConstPtr& msg);
     };
 
