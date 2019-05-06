@@ -1,0 +1,10 @@
+<launch>
+	<group ns="camera">
+
+		<include file="$(find camera_nodelet)/launch/manager.launch"/>
+		<include file="$(find camera_nodelet)/launch/drain.launch"/>
+		<include file="$(find camera_nodelet)/launch/source.launch"/>
+		
+	</group>
+	
+</launch>
