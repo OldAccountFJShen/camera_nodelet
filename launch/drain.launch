@@ -1,5 +1,0 @@
-<launch>
-	<node pkg="nodelet" type="nodelet" name="drain"
-			args="load camera/drain nodelet_manager">
-	</node>
-</launch>
