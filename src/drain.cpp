@@ -10,6 +10,7 @@
 
 namespace camera{
     void drain::onInit(){
+<<<<<<< HEAD
 	ros::NodeHandle& rs = getMTNodeHandle();
 	depth_sub = rs.subscribe<sensor_msgs::Image>("depth", 8, &drain::drain_depth_callback, this);
 	rgb_sub = rs.subscribe<sensor_msgs::Image>("RGB", 8, &drain::drain_rgb_callback, this);
@@ -58,6 +59,20 @@ namespace camera{
 	    cv_const_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8); //the CV Bridge will auto-convert from RGB to BGR format
 	    //cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
  
+=======
+	ros::NodeHandle& rs = getPrivateNodeHandle();
+	depth_sub = rs.subscribe<sensor_msgs::Image>("depth", 8, &drain::drain_callback, this);
+	NODELET_INFO("Camera drain node created\n");
+    }
+    
+    void drain::drain_callback(const sensor_msgs::Image::ConstPtr& msg){
+	//NODELET_INFO("DEPTH IMAGE RECEIVED");
+	try
+	{
+	    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO16);
+	    //NODELET_INFO("cv bridge successful\n");
+	
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
 	}
 	catch (cv_bridge::Exception& e)
 	{
@@ -65,6 +80,7 @@ namespace camera{
 	    return;
 	}
 
+<<<<<<< HEAD
 	std::string myStr =  "received rgb frame"+(msg->header.frame_id)+"\n";
 	const char* c = myStr.c_str();
 	NODELET_INFO(c);
@@ -79,5 +95,11 @@ namespace camera{
         myStr = "saved color frame"+(msg->header.frame_id)+"\n";
 	const char* c2 = myStr.c_str();
 	NODELET_INFO(c2);
+=======
+	std::string str;
+	str = "/media/nvidia/ExtremeSSD/depth_images/"+msg->header.frame_id+".jpg";
+	cv::imwrite(str, cv_ptr->image);
+	//NODELET_INFO("Image written\n");
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
     }
 }

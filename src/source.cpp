@@ -8,13 +8,21 @@
 
 namespace camera{
     void source::onInit(){
+<<<<<<< HEAD
 	ros::NodeHandle& rs = getMTNodeHandle();
+=======
+	ros::NodeHandle& rs = getPrivateNodeHandle();
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
 	depth_pub = rs.advertise<sensor_msgs::Image>("depth", 8);
         rgb_pub = rs.advertise<sensor_msgs::Image>("RGB", 8);
     	c.enable_stream(RS2_STREAM_DEPTH, 640, 480, RS2_FORMAT_Z16, FPS);
     	c.enable_stream(RS2_STREAM_COLOR, 640, 480, RS2_FORMAT_RGB8, (FPS>60)?60:FPS);//according to Intel RS documentation, the max FPS of rgb stream is 60 
     	p.start(c);
     	timer = rs.createTimer(ros::Duration(1/(FPS+5)), &source::timerCallback, this);
+<<<<<<< HEAD
+=======
+	NODELET_INFO("Camera source node initialized\n");
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
     }
 	
 	
@@ -44,8 +52,13 @@ namespace camera{
 	memcpy(&depth_image[0], pixel_ptr, 2*pixel_amount*sizeof(uint8_t));
 	memcpy(&color_image[0], pixel_ptr_color, 3*pixel_amount_color*sizeof(uint8_t));
 
+<<<<<<< HEAD
         depth_msg.header.frame_id = std::to_string(seq);//this is the sequence number since start of the programme
 	depth_msg.header.stamp = ros::Time::now(); //this is the absolute time since epoch, ie year 1970
+=======
+        depth_msg.header.frame_id = std::to_string(seq);
+	depth_msg.header.stamp = ros::Time::now();
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
 	depth_msg.data = depth_image;
 	depth_msg.height = height;
 	depth_msg.width = width;

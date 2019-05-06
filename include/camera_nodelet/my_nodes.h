@@ -27,11 +27,19 @@ namespace camera{
 	ros::Publisher depth_pub;
 	ros::Publisher rgb_pub;
 	ros::Timer timer;
+<<<<<<< HEAD
 	float FPS = 30; //{15, 30, 60, 90}
+=======
+	float FPS = 60; //{15, 30, 60, 90}
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
 	uint32_t seq = 0;
 	rs2::frameset frames;
 	rs2::pipeline p;
 	rs2::config c;
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
 	void timerCallback(const ros::TimerEvent& event);
     };
 
@@ -48,9 +56,14 @@ namespace camera{
 	virtual void onInit();
     private:
 	ros::Subscriber depth_sub;
+<<<<<<< HEAD
 	ros::Subscriber rgb_sub;
 	void drain_depth_callback(const sensor_msgs::Image::ConstPtr& msg);
 	void drain_rgb_callback(const sensor_msgs::Image::ConstPtr& msg);
+=======
+	cv_bridge::CvImagePtr cv_ptr; //i don't know if I should put cv_ptr here or in the method scope
+	void drain_callback(const sensor_msgs::Image::ConstPtr& msg);
+>>>>>>> 918ae7f85a35edfb683b1fb2445f4bb28853a9bf
     };
 
     
