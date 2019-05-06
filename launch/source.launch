@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="nodelet" type="nodelet" name="source"
+			args="load camera/source nodelet_manager">
+	</node>
+</launch>
