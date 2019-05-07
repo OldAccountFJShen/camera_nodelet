@@ -1,10 +1,11 @@
 <launch>
-	<group ns="camera">
+	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find camera_nodelet)/custom_rosconfig.config"/>
+		<group ns="camera">
 
-		<include file="$(find camera_nodelet)/launch/manager.launch"/>
-		<include file="$(find camera_nodelet)/launch/drain.launch"/>
-		<include file="$(find camera_nodelet)/launch/source.launch"/>
+			<include file="$(find camera_nodelet)/launch/manager.launch"/>
+			<include file="$(find camera_nodelet)/launch/drain.launch"/>
+			<include file="$(find camera_nodelet)/launch/source.launch"/>
 		
-	</group>
+		</group>
 	
 </launch>
